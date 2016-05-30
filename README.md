@@ -8,9 +8,9 @@
 控制台运行 main.Launcher 主函数;
 new ConnectServer(直播房间ID, 用户ID);
 ###点歌格式
-点歌==歌名
-点歌 歌名
-{music:歌名}
+点歌==歌名  
+点歌 歌名  
+{music:歌名}  
 
 ###屏蔽列表
 在项目根目录 illegal_music_list 中填写屏蔽的歌曲名，换行分割。
