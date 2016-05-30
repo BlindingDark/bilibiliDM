@@ -96,6 +96,8 @@ public class Launcher {
 						delectThread.cleanMusicList();
 					}
 					this.putThisMusic(musicDM);
+					musicDM = null;
+					
 				}
 			}
 
