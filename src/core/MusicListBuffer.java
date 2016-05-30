@@ -22,10 +22,9 @@ public class MusicListBuffer {
 	}
 
 	public Music getNextMusic() {
-		nowSize = MusicListBuff.size();
-
-		if (nowSize != 0) {
-			synchronized (MusicListBuff) {
+		synchronized (MusicListBuff) {
+			nowSize = MusicListBuff.size();
+			if (nowSize != 0) {
 				return MusicListBuff.remove(rand.nextInt(nowSize));
 			}
 		}

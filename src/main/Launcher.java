@@ -1,11 +1,13 @@
 package main;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cloudmusic.GetMusicURLByName;
 import core.ConnectServer;
+import core.DefaultMusicList;
 import core.DelectThread;
 import core.MsgBuffer;
 import core.Music;
@@ -51,26 +53,31 @@ public class Launcher {
 
 		String msg;// 弹幕消息
 		String musicDM = null;// 点歌信息
-		
+
 		String musicPatternString = "点歌==(.*)";
 		Pattern musicPattern = Pattern.compile(musicPatternString);
-		
+
+		String blankMusicPatternString = "点歌 (.*)";
+		Pattern blankMusicPattern = Pattern.compile(blankMusicPatternString);
+
 		// 丧心病狂的 JSON 格式点歌
 		String patternJSONMusicString = "\\{music:(.*)\\}";
 		Pattern JSONMusicPattern = Pattern.compile(patternJSONMusicString);
 
 		Matcher musicMatcher;
 
+		DefaultMusicList defMusicList = new DefaultMusicList();
+
 		while (true) {
 			msg = msgBuffer.getDanmuMSG();
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 
 			if (!(null == msg)) {
 				// System.out.println(msg);
+				musicMatcher = blankMusicPattern.matcher(msg);
+				if (musicMatcher.find()) {
+					musicDM = musicMatcher.group(1);
+				}
+
 				musicMatcher = JSONMusicPattern.matcher(msg);
 				if (musicMatcher.find()) {
 					musicDM = musicMatcher.group(1);
@@ -81,12 +88,37 @@ public class Launcher {
 					musicDM = musicMatcher.group(1);
 				}
 
-				this.playThis(musicDM);
+				// 如果收到了点歌弹幕
+				if (musicDM != null) {
+					// 如果在播放默认音乐，则删除默认歌单
+					if (nowPlayList.isPlayingDefaultMusic()) {
+						nowPlayList.setPlayingDefaultMusic(false);
+						delectThread.cleanMusicList();
+					}
+					this.putThisMusic(musicDM);
+				}
 			}
+
+			if ((nowPlayList.getNowMusicCount() == 0) && (!musicPlayer.isPlaying())) {
+				nowPlayList.setPlayingDefaultMusic(true);
+				this.putMusicList(defMusicList.getDefaultmusiclist());
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
 		}
 	}
 
-	public void playThis(String _music) {
+	public void putMusicList(List<String> musicList) {
+		for (String music : musicList) {
+			this.putThisMusic(music);
+		}
+	}
+
+	public void putThisMusic(String _music) {
 
 		Music music = GetMusicURLByName.haveThisMusic(_music);
 		if (!music.isMusic()) {

@@ -8,17 +8,46 @@ public class MusicList {
 	int MUSICMAXNUM = 10;
 	MusicListBuffer musicListBuffer;
 	ArrayList<Music> nowPlayMusic = new ArrayList<>();
+	Music nextMusic;
 
+	boolean isPlayingDefaultMusic = false;
+
+	public void cleanMusicList() {
+		synchronized (nowPlayMusic) {
+			int nowMusicCount = nowPlayMusic.size();
+			for (int i = 0; i < nowMusicCount; i++) {
+				nowPlayMusic.remove(0);
+			}
+		}
+	}
+	
+	
+	public void setPlayingDefaultMusic(boolean isPlayingDefaultMusic) {
+		this.isPlayingDefaultMusic = isPlayingDefaultMusic;
+	}
+
+	public boolean isPlayingDefaultMusic() {		
+		return isPlayingDefaultMusic;
+	}
+
+	
+	
+	public MusicList(MusicListBuffer _musicListBuffer) {
+		this.musicListBuffer = _musicListBuffer;
+	}
+	
 	public ArrayList<Music> getNowPlayMusic() {
 		return nowPlayMusic;
 	}
 
-	Music nextMusic;
 
-	public MusicList(MusicListBuffer _musicListBuffer) {
-		this.musicListBuffer = _musicListBuffer;
+	
+	public int getNowMusicCount() {
+		synchronized (nowPlayMusic) {
+			return nowPlayMusic.size();
+		}
 	}
-
+	
 	public Music getNextMusic() {
 		synchronized (nowPlayMusic) {
 			if (nowPlayMusic.size() != 0) {
@@ -26,7 +55,6 @@ public class MusicList {
 			}
 		}
 		return null;
-
 	}
 
 	public void getMusicList() {

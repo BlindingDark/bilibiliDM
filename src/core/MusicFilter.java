@@ -8,32 +8,34 @@ import java.util.Hashtable;
 
 public class MusicFilter {
 	static final Hashtable<String, Boolean> illegalMusicList = new Hashtable<String, Boolean>();
-	
-	public MusicFilter(){
+
+	public MusicFilter() {
 		this.readIllegalMusicFile();
 	}
-	 public void readIllegalMusicFile() {
-	        File file = new File("illegal_music_list");
-	        BufferedReader reader = null;
-	        try {
-	            reader = new BufferedReader(new FileReader(file));
-	            String tempString = null;
-	            // 一次读入一行，直到读入null为文件结束
-	            while ((tempString = reader.readLine()) != null) {
-	            	illegalMusicList.put(tempString, Boolean.FALSE);
-	            }
-	            reader.close();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        } finally {
-	            if (reader != null) {
-	                try {
-	                    reader.close();
-	                } catch (IOException e1) {
-	                }
-	            }
-	        }
-	    }
+
+	public void readIllegalMusicFile() {
+		File file = new File("illegal_music_list");
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader(file));
+			String tempString = null;
+			// 一次读入一行，直到读入null为文件结束
+			while ((tempString = reader.readLine()) != null) {
+				illegalMusicList.put(tempString, Boolean.FALSE);
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e1) {
+				}
+			}
+		}
+	}
+
 	public boolean filter(Music music) {
 		this.readIllegalMusicFile();
 		Boolean illegalMusicName = illegalMusicList.get(music.getMusicName());
@@ -44,10 +46,8 @@ public class MusicFilter {
 		if (null != illegalMusicId) {
 			return false;
 		}
-		
+
 		return true;
 	}
-	
-	
 
 }
