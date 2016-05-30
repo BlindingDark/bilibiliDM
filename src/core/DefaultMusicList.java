@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class DefaultMusicList {
 	
 	
-	ArrayList<String> defaultMusicList = new ArrayList<String>();
+	ArrayList<String> defaultMusicList;
 
 	
 	public ArrayList<String> getDefaultmusiclist() {
@@ -24,6 +24,7 @@ public class DefaultMusicList {
 	void readDefaultMusicFile() {
         File file = new File("default_music_list");
         BufferedReader reader = null;
+        defaultMusicList = new ArrayList<String>();
         try {
             reader = new BufferedReader(new FileReader(file));
             String tempString = null;
