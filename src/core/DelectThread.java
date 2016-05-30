@@ -34,9 +34,14 @@ public class DelectThread implements Runnable {
 			System.out.println("输入要删除的序号:");
 
 			index = sc.nextInt();
-
+			
 			if (index == -1) {
 				mp3Player.cut();
+				continue;
+			}
+			
+			if (index == -1024) {
+				cleanMusicList();
 				continue;
 			}
 			synchronized (nowPlayMusic) {

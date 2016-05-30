@@ -1,6 +1,7 @@
 package main;
 
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -54,10 +55,10 @@ public class Launcher {
 		String msg;// 弹幕消息
 		String musicDM = null;// 点歌信息
 
-		String musicPatternString = "点歌==(.*)";
+		String musicPatternString = "^点歌==(.*)";
 		Pattern musicPattern = Pattern.compile(musicPatternString);
 
-		String blankMusicPatternString = "点歌 (.*)";
+		String blankMusicPatternString = "^点歌 (.*)";
 		Pattern blankMusicPattern = Pattern.compile(blankMusicPatternString);
 
 		// 丧心病狂的 JSON 格式点歌
@@ -115,6 +116,8 @@ public class Launcher {
 	}
 
 	public void putMusicList(List<String> musicList) {
+		//打乱列表
+		Collections.shuffle(musicList);
 		for (String music : musicList) {
 			this.putThisMusic(music);
 		}
