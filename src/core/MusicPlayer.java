@@ -21,7 +21,6 @@ public class MusicPlayer implements Runnable {
 				System.out.println("+++++++++++++++");
 				nowPlayList.getMusicList();
 				System.out.println("+++++++++++++++");
-				System.out.println("+++++++++++++++");
 				mp3Player.play(nextMusic);
 			}
 		}

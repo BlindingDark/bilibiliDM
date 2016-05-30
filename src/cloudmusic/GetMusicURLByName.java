@@ -26,15 +26,35 @@ public class GetMusicURLByName {
 
 	static String musicArtistsPatternStr = "\"artists\":\\[\\{\"id\":[0-9]*,\"name\":\"(.*?)\"";
 	static Pattern musicArtistsPattern = Pattern.compile(musicArtistsPatternStr);
+	
+	
+	static String musicDurationPatternStr = "\"duration\":[0-9]*";
+	static Pattern musicDurationPattern = Pattern.compile(musicDurationPatternStr);
+	
+	static String musicCanDownloadPatternStr = ".*==/0\\.mp3";
+	static Pattern musicCanDownloadPattern = Pattern.compile(musicCanDownloadPatternStr);
 
+	
 	static Matcher matcher;
 
 	public static void main(String[] args) {
 		String musicInfo = PostAndGet.sendPost("http://music.163.com/api/search/get/",
-				"s=" + "借口" + "&limit=1&type=1&offset=0");
+				"s=" + 1702644 + "&limit=1&type=1&offset=0");
+		;
+		String musicUrl = getMusicURL("21162523");
+		System.out.println(musicCanDownloadPattern.matcher(musicUrl).find());
 
-		String musicArtists = getMusicArtists(musicInfo);
-		System.out.println(musicArtists);
+
+	}
+	static Integer getMusicDuration(String musicInfo) {
+		matcher = musicDurationPattern.matcher(musicInfo);
+		if (matcher.find()) {
+			musicInfoBuf = matcher.group(0).split(":");
+			return Integer.valueOf(musicInfoBuf[1]);
+		} else {
+			return null;
+		}
+		
 	}
 	
 	static String getMusicName(String musicInfo) {
@@ -78,15 +98,24 @@ public class GetMusicURLByName {
 			music.setMusicId(musicId);
 		}
 
+
 		String musicName = getMusicName(musicInfo);
 		music.setMusicName(musicName);
 
+		//查看是否能被下载
+		String musicUrl = getMusicURL(musicId);
+		if (musicCanDownloadPattern.matcher(musicUrl).find()) {
+			music.setMusic(false);
+			System.out.println("由于版权原因，无法播放 "+music.getMusicName());
+			return music;
+		}
+		
 		String musicArtists = getMusicArtists(musicInfo);
 		music.setMusicArtist(musicArtists);
 		
-		String musicURL = getMusicURL(musicId);
-		music.setMusicURL(musicURL);
-
+		Integer duration = getMusicDuration(musicInfo);
+		music.setDuration(duration);
+		
 		return music;
 	}
 

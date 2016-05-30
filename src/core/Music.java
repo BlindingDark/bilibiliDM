@@ -1,11 +1,15 @@
 package core;
 
+import cloudmusic.GetMusicURLByName;
+
 public class Music {
 	boolean isMusic = false;
 	String musicArtist;
 	String musicName;
 	String musicURL;
 	String musicId;
+	int duration;
+
 
 
 	public Music(){
@@ -16,7 +20,6 @@ public class Music {
 	public Music(String musicName,String musicArtist,String musicURL) {
 		setMusicName(musicName);
 		setMusicArtist(musicArtist);
-		setMusicURL(musicURL);
 	}
 
 	public String getMusicArtist() {
@@ -35,12 +38,8 @@ public class Music {
 		this.musicName = musicName;
 	}
 
-	public String getMusicURL() {
-		return musicURL;
-	}
-
-	public void setMusicURL(String musicURL) {
-		this.musicURL = musicURL;
+	public String getMusicURL() {	
+		return GetMusicURLByName.getMusicURL(this.getMusicId());
 	}
 	public boolean isMusic() {
 		return isMusic;
@@ -56,4 +55,11 @@ public class Music {
 		this.musicId = musicId;
 	}
 
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
 }

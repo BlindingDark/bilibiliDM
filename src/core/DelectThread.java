@@ -33,7 +33,7 @@ public class DelectThread implements Runnable {
 			
 			if (index == -1) {
 				mp3Player.cut();
-				return;
+				continue;
 			}
 			synchronized (nowPlayMusic) {
 				nowPlayMusic.remove(index);
