@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
+/**
+ * @author BlindingDark
+ *	默认播放列表，在无人点歌时播放
+ */
 public class DefaultMusicList {
 	
 	
@@ -18,9 +22,9 @@ public class DefaultMusicList {
 		return defaultMusicList;
 	}
 
-
-
-
+	/**
+	 * 从 default_music_list 文件读取默认播放列表，在无人点歌时播放
+	 */
 	void readDefaultMusicFile() {
         File file = new File("default_music_list");
         BufferedReader reader = null;

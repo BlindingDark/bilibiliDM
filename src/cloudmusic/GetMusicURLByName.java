@@ -10,6 +10,10 @@ import org.json.JSONObject;
 
 import core.Music;
 
+/**
+ * @author BlindingDark
+ *	网易云接口
+ */
 public class GetMusicURLByName {
 
 	static JSONObject jsonMusicInfo;
@@ -36,6 +40,10 @@ public class GetMusicURLByName {
 	static Matcher matcher;
 	static Matcher URLmatcher;
 
+	/**
+	 * 测试
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		String musicInfo = PostAndGet.sendPost("http://music.163.com/api/search/get/",
 				"s=" + 1702644 + "&limit=1&type=1&offset=0");
@@ -45,6 +53,11 @@ public class GetMusicURLByName {
 
 	}
 
+	/**
+	 * 提取音乐时长
+	 * @param musicInfo json
+	 * @return 音乐时长
+	 */
 	static Integer getMusicDuration(String musicInfo) {
 		matcher = musicDurationPattern.matcher(musicInfo);
 		if (matcher.find()) {
@@ -56,6 +69,11 @@ public class GetMusicURLByName {
 
 	}
 
+	/**
+	 * 提取歌曲名
+	 * @param musicInfo
+	 * @return 歌曲名
+	 */
 	static String getMusicName(String musicInfo) {
 		matcher = musicNamePattern.matcher(musicInfo);
 		matcher.find();
@@ -63,6 +81,11 @@ public class GetMusicURLByName {
 
 	}
 
+	/**
+	 * 提取歌曲ID
+	 * @param musicInfo
+	 * @return 歌曲ID
+	 */
 	static String getMusicId(String musicInfo) {
 		matcher = musicIdPattern.matcher(musicInfo);
 		if (matcher.find()) {
@@ -73,6 +96,11 @@ public class GetMusicURLByName {
 		}
 	}
 
+	/**
+	 * 提取歌曲艺术家
+	 * @param musicInfo
+	 * @return 歌曲艺术家
+	 */
 	static String getMusicArtists(String musicInfo) {
 		matcher = musicArtistsPattern.matcher(musicInfo);
 		if (matcher.find()) {
@@ -82,6 +110,11 @@ public class GetMusicURLByName {
 		}
 	}
 
+	/**
+	 * 判断是否存在这首歌曲
+	 * @param 网易云搜索字符串，把这个歌名提交给网易云
+	 * @return 返回的是 Music类。如果 music.isMusic == true，表示有这个歌曲。反之表示没有。
+	 */
 	public static Music haveThisMusic(String _music) {
 		Music music = new Music();
 
@@ -120,6 +153,11 @@ public class GetMusicURLByName {
 	static String musicURLPatternStr = "\"url\":\"(.*?)\"";
 	static Pattern musicURLPattern = Pattern.compile(musicURLPatternStr);
 
+	/**
+	 * 得到音乐的课播放链接
+	 * @param musicId
+	 * @return 音乐播放链接
+	 */
 	public static String getMusicURL(String musicId) {
 
 		musicURLInfo = PostAndGet.sendGet("http://app.atime.me/music-api-server/",

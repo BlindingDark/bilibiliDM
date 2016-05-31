@@ -7,12 +7,15 @@ import java.util.ArrayList;
 
 import tools.BytesIntSwitch;
 
+/**
+ * @author BlindingDark
+ *	接受弹幕的线程
+ */
 public class ReceiveMsg implements Runnable {
 
 	InputStream is;
 	MsgBuffer msgBuffer;
 	ConnectServer connect;
-	
 
 
 	public ReceiveMsg(ConnectServer _connect, MsgBuffer _msgBuffer) {

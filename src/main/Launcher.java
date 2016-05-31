@@ -1,6 +1,5 @@
 package main;
 
-import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -19,11 +18,15 @@ import core.MusicPlayer;
 import core.ReceiveMsg;
 import tools.Mp3Player;
 
+/**
+ * @author BlindingDark
+ *	点歌姬启动~
+ *	
+ */
 public class Launcher {
 
 	// 维持一个与弹幕服务器的连接（30s发送一个心跳）
 	ConnectServer connect = new ConnectServer(206617, 7178767);
-	//InputStream is = connect.conn();
 
 	// 弹幕缓冲区
 	MsgBuffer msgBuffer = new MsgBuffer();
@@ -115,6 +118,10 @@ public class Launcher {
 		}
 	}
 
+	/**
+	 * 填充一个音乐列表，批量点歌
+	 * @param musicList
+	 */
 	public void putMusicList(List<String> musicList) {
 		//打乱列表
 		Collections.shuffle(musicList);
@@ -123,8 +130,11 @@ public class Launcher {
 		}
 	}
 
+	/**
+	 * 放入下一首歌曲
+	 * @param _music
+	 */
 	public void putThisMusic(String _music) {
-
 		Music music = GetMusicURLByName.haveThisMusic(_music);
 		if (!music.isMusic()) {
 			System.out.println("+++++++++++++++");

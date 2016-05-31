@@ -7,6 +7,10 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
 
+/**
+ * @author BlindingDark
+ *	发送 POST 和 GET 的工具包
+ */
 public class PostAndGet {
 	public static String sendGet(String url, String param) {
 		String result = "";
@@ -57,8 +61,6 @@ public class PostAndGet {
 			// 设置通用的请求属性
 			conn.setRequestProperty("Cookie", "2.0.2");
 			conn.setRequestProperty("Referer", "http://music.163.com");
-			// conn.setRequestProperty("user-agent","Mozilla/4.0 (compatible;
-			// MSIE 6.0; Windows NT 5.1;SV1)");
 			// 发送POST请求必须设置如下两行
 			conn.setDoOutput(true);
 			conn.setDoInput(true);

@@ -1,8 +1,11 @@
 package core;
 
-import cloudmusic.GetMusicURLByName;
 import tools.Mp3Player;
 
+/**
+ * @author BlindingDark
+ *	音乐播放线程
+ */
 public class MusicPlayer implements Runnable {
 	MusicList nowPlayList;
 	Mp3Player mp3Player;
@@ -21,6 +24,9 @@ public class MusicPlayer implements Runnable {
 		this.mp3Player = _mp3Player;
 	}
 
+	/**
+	 * 播放歌曲的线程
+	 */
 	@Override
 	public void run() {
 		while (true) {

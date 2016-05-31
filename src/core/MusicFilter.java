@@ -6,6 +6,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Hashtable;
 
+/**
+ * @author BlindingDark
+ *	过滤音乐黑名单
+ */
 public class MusicFilter {
 	static final Hashtable<String, Boolean> illegalMusicList = new Hashtable<String, Boolean>();
 
@@ -13,6 +17,9 @@ public class MusicFilter {
 		this.readIllegalMusicFile();
 	}
 
+	/**
+	 * 读取 illegal_music_list 文件中的歌曲名称，并加载到 Hashtable
+	 */
 	public void readIllegalMusicFile() {
 		File file = new File("illegal_music_list");
 		BufferedReader reader = null;
@@ -36,6 +43,11 @@ public class MusicFilter {
 		}
 	}
 
+	/**
+	 * 检查一个歌曲是否被拉黑
+	 * @param music
+	 * @return true 表示通过，false 表示被拉黑
+	 */
 	public boolean filter(Music music) {
 		this.readIllegalMusicFile();
 		Boolean illegalMusicName = illegalMusicList.get(music.getMusicName());

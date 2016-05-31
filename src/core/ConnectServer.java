@@ -9,11 +9,19 @@ import java.net.UnknownHostException;
 
 import tools.*;
 
+/**
+ * @author BlindingDark
+ *	连接b站弹幕服务器
+ */
 public class ConnectServer {
 
 	int roomid;
 	int uid;
 
+	/**
+	 * @param _roomid 要连接的直播间的ID（真实ID，短ID无效）
+	 * @param _uid 用户ID（随便写一个用户的ID就行了，自己的就行）
+	 */
 	public ConnectServer(int _roomid, int _uid) {
 		this.roomid = _roomid;
 		this.uid = _uid;
@@ -24,8 +32,10 @@ public class ConnectServer {
 	Heartbeats heartbeats;
 	Thread startHeartbeat;
 
-	@SuppressWarnings("resource")
-
+	/**
+	 * 获取一个与弹幕服务器维持链接的 InputStream
+	 * @return InputStream
+	 */
 	public InputStream conn() {
 		Socket socket = null;
 		OutputStream os = null;
@@ -44,8 +54,7 @@ public class ConnectServer {
 			// 输入流
 			is = socket.getInputStream();
 
-			// 3.利用流按照一定的操作，对socket进行读写操作
-
+			// 发起连接的包主要信息格式
 			String send = "{\"roomid\":" + roomid + ",\"uid\":" + uid + "}";
 			int msgLength = 16 + send.length();
 
@@ -54,22 +63,25 @@ public class ConnectServer {
 			byte[] Askarg = BytesIntSwitch.intToByteArray(7);
 			byte[] argbehindAskarg = BytesIntSwitch.intToByteArray(1);
 
+			//组合成发起连接包的头部
 			byte[] sendHead = BytesMerger.merger(
 					BytesMerger.merger(BytesMerger.merger(msgLengthBytes, argBetweenLengthAndAskarg), Askarg),
 					argbehindAskarg);
 
+			//头部和主体拼接
 			byte[] sendm = BytesMerger.merger(sendHead, send.getBytes("UTF-8"));
 
 			os.write(sendm);
 			os.flush();
 			
+			//如果第 11 位为 8，则表示成功链接弹幕服务器 
 			byte[] reply = new byte[16];
 			is.read(reply);
 			if (reply[11] == 8) {
 				System.out.println("连接服务器成功");
 			}
 
-			// 启动心跳发送
+			// 启动心跳发送，每 30 秒发送一个心跳包
 			startHeartbeat = new Thread(heartbeats);
 			startHeartbeat.start();
 			// os.write(heartMsg);

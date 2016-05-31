@@ -2,24 +2,25 @@ package core;
 
 import cloudmusic.GetMusicURLByName;
 
+/**
+ * @author BlindingDark 
+ * 音乐信息
+ */
 public class Music {
-	boolean isMusic = false;
-	String musicArtist;
-	String musicName;
-	String musicURL;
-	String musicId;
-	int duration;
+	boolean isMusic = false;// 是否是可播放的音乐
+	String musicArtist;// 艺术家
+	String musicName;// 歌曲名
+	String musicURL;// 歌曲播放链接
+	String musicId;// 歌曲ID
+	int duration;// 歌曲持续时长
 
-
-
-	public Music(){
-		
-		
-	}
-	
-	public Music(String musicName,String musicArtist,String musicURL) {
+	public Music(String musicName, String musicArtist, String musicURL) {
 		setMusicName(musicName);
 		setMusicArtist(musicArtist);
+	}
+
+	public Music() {
+
 	}
 
 	public String getMusicArtist() {
@@ -38,15 +39,18 @@ public class Music {
 		this.musicName = musicName;
 	}
 
-	public String getMusicURL() {	
+	public String getMusicURL() {
 		return GetMusicURLByName.getMusicURL(this.getMusicId());
 	}
+
 	public boolean isMusic() {
 		return isMusic;
 	}
+
 	public void setMusic(boolean isMusic) {
 		this.isMusic = isMusic;
 	}
+
 	public String getMusicId() {
 		return musicId;
 	}

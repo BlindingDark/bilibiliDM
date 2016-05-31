@@ -7,9 +7,14 @@ import java.net.Socket;
 import tools.BytesIntSwitch;
 import tools.BytesMerger;
 
+/**
+ * @author BlindingDark
+ *	发送心跳包的线程
+ */
 public class Heartbeats implements Runnable {
 
 	OutputStream os;
+	// 心跳包格式
 	byte[] heartMsg1 = BytesIntSwitch.intToByteArray(16);
 	byte[] heartMsg2 = BytesIntSwitch.intToByteArray(1048577);
 	byte[] heartMsg3 = BytesIntSwitch.intToByteArray(2);
@@ -26,6 +31,9 @@ public class Heartbeats implements Runnable {
 	}
 
 
+	/**
+	 * 获取弹幕服务器的 OutputStream
+	 */
 	void getOutputStream() {
 		try {
 			this.os = socket.getOutputStream();
@@ -40,6 +48,9 @@ public class Heartbeats implements Runnable {
 		}
 	}
 
+	/**
+	 * 发送心跳包
+	 */
 	public void send() {
 		try {
 			os.write(heartMsg);
@@ -49,6 +60,9 @@ public class Heartbeats implements Runnable {
 		}
 	}
 
+	/**
+	 * 发送线程启动
+	 */
 	@Override
 	public void run() {
 		while (true) {
