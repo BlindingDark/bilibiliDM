@@ -64,6 +64,8 @@ public class ReceiveMsg implements Runnable {
 				}
 
 			}
+			
+			
 		} catch (UnsupportedEncodingException e) {
 			System.out.println("出现了意外的编码错误，正在重连……");
 			try {
@@ -93,6 +95,7 @@ public class ReceiveMsg implements Runnable {
 	public void run() {
 		while(true){
 			this.receive();
+			System.out.println("正在重连……");
 		}
 	}
 }

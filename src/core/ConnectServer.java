@@ -21,7 +21,7 @@ public class ConnectServer {
 
 	String serverURL = "livecmt-2.bilibili.com";
 
-	Heartbeats heartbeats = new Heartbeats(serverURL);
+	Heartbeats heartbeats;
 	Thread startHeartbeat;
 
 	@SuppressWarnings("resource")
@@ -38,6 +38,7 @@ public class ConnectServer {
 
 			// 1.建立客户端socket连接，指定服务器位置及端口
 			socket = new Socket(serverURL, 788);
+			heartbeats = new Heartbeats(socket);
 			// 2.得到socket读写流
 			os = socket.getOutputStream();
 			// 输入流
@@ -61,6 +62,7 @@ public class ConnectServer {
 
 			os.write(sendm);
 			os.flush();
+			
 			byte[] reply = new byte[16];
 			is.read(reply);
 			if (reply[11] == 8) {

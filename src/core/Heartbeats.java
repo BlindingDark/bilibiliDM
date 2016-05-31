@@ -19,19 +19,15 @@ public class Heartbeats implements Runnable {
 			.merger(BytesMerger.merger(BytesMerger.merger(heartMsg1, heartMsg2), heartMsg3), heartMsg4);
 
 	Socket socket;
-	String serverURL;
 	
-	public Heartbeats(String _serverURL){
-		this.serverURL = _serverURL;
-		this.getOutputStream(_serverURL);
+	public Heartbeats(Socket _socket) {
+		this.socket = _socket;
+		getOutputStream();
 	}
-	
 
-	void getOutputStream(String serverURL) {
-		
-		// 1.建立客户端socket连接，指定服务器位置及端口
+
+	void getOutputStream() {
 		try {
-			this.socket = new Socket(serverURL, 788);
 			this.os = socket.getOutputStream();
 		} catch (IOException e) {
 			System.out.println("向弹幕服务器发送消息失败……正在重试……");
@@ -40,7 +36,7 @@ public class Heartbeats implements Runnable {
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
-			this.getOutputStream(serverURL);
+			this.getOutputStream();
 		}
 	}
 
@@ -48,7 +44,7 @@ public class Heartbeats implements Runnable {
 		try {
 			os.write(heartMsg);
 		} catch (IOException e) {
-			this.getOutputStream(serverURL);
+			this.getOutputStream();
 			this.send();
 		}
 	}
