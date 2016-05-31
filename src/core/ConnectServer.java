@@ -19,18 +19,27 @@ public class ConnectServer {
 		this.uid = _uid;
 	}
 
+	String serverURL = "livecmt-2.bilibili.com";
+
+	Heartbeats heartbeats = new Heartbeats(serverURL);
+	Thread startHeartbeat;
+
 	@SuppressWarnings("resource")
-	public InputStream conn(){
+
+	public InputStream conn() {
 		Socket socket = null;
 		OutputStream os = null;
 		InputStream is = null;
 
 		try {
+			if (startHeartbeat != null) {
+				startHeartbeat.stop();
+			}
+
 			// 1.建立客户端socket连接，指定服务器位置及端口
-			socket = new Socket("livecmt-2.bilibili.com", 788);
+			socket = new Socket(serverURL, 788);
 			// 2.得到socket读写流
 			os = socket.getOutputStream();
-
 			// 输入流
 			is = socket.getInputStream();
 
@@ -50,14 +59,6 @@ public class ConnectServer {
 
 			byte[] sendm = BytesMerger.merger(sendHead, send.getBytes("UTF-8"));
 
-			byte[] heartMsg1 = BytesIntSwitch.intToByteArray(16);
-			byte[] heartMsg2 = BytesIntSwitch.intToByteArray(1048577);
-			byte[] heartMsg3 = BytesIntSwitch.intToByteArray(2);
-			byte[] heartMsg4 = BytesIntSwitch.intToByteArray(1);
-
-			byte[] heartMsg = BytesMerger
-					.merger(BytesMerger.merger(BytesMerger.merger(heartMsg1, heartMsg2), heartMsg3), heartMsg4);
-
 			os.write(sendm);
 			os.flush();
 			byte[] reply = new byte[16];
@@ -67,29 +68,34 @@ public class ConnectServer {
 			}
 
 			// 启动心跳发送
-
-			Heartbeats heartbeats = new Heartbeats(os, heartMsg);
-			Thread startHeartbeat = new Thread(heartbeats);
+			startHeartbeat = new Thread(heartbeats);
 			startHeartbeat.start();
 			// os.write(heartMsg);
 
 			return is;
 
 		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			return null;
+			System.out.println("无法连接指定的弹幕服务器……正在重试……");
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			startHeartbeat.stop();
+			return this.conn();
 		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
+			System.out.println("弹幕服务器连接异常……正在重试……");
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			startHeartbeat.stop();
+			return this.conn();
 		} finally {
 			/*
-			try {
-				is.close();
-				os.close();
-				socket.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			 * try { is.close(); os.close(); socket.close(); } catch
+			 * (IOException e) { e.printStackTrace(); }
 			 */
 		}
 	}

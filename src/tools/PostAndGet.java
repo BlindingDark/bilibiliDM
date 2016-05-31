@@ -25,8 +25,13 @@ public class PostAndGet {
 				result += line;
 			}
 		} catch (Exception e) {
-			System.out.println("发送GET请求出现异常！" + e);
-			e.printStackTrace();
+			System.out.println("连接音乐服务器异常……正在重试……");
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			PostAndGet.sendGet(url, param);
 		}
 		// 使用finally块来关闭输入流
 		finally {
@@ -70,8 +75,13 @@ public class PostAndGet {
 				result += line;
 			}
 		} catch (Exception e) {
-			System.out.println("发送 POST 请求出现异常！" + e);
-			e.printStackTrace();
+			System.out.println("连接音乐服务器异常……正在重试……");
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			PostAndGet.sendPost(url, param);
 		}
 		// 使用finally块来关闭输出流、输入流
 		finally {

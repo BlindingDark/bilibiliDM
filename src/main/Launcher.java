@@ -23,12 +23,12 @@ public class Launcher {
 
 	// 维持一个与弹幕服务器的连接（30s发送一个心跳）
 	ConnectServer connect = new ConnectServer(206617, 7178767);
-	InputStream is = connect.conn();
+	//InputStream is = connect.conn();
 
 	// 弹幕缓冲区
 	MsgBuffer msgBuffer = new MsgBuffer();
 
-	ReceiveMsg receiveMsg = new ReceiveMsg(is, msgBuffer);
+	ReceiveMsg receiveMsg = new ReceiveMsg(connect, msgBuffer);
 	Thread receiveThread = new Thread(receiveMsg);
 
 	MusicFilter musicFilter = new MusicFilter();
