@@ -14,7 +14,7 @@
 
 ###注意事项
 默认使用了 Windows Media Player 作为播放器，
-确保 C:/Program Files (x86)/Windows Media Player/wmplayer.exe 存在
+确保 C:/Program Files (x86)/Windows Media Player/wmplayer.exe 存在  
 非 WINDOWS 平台在 tools.Mp3Player 类中切换到 Java 版本的音乐播放器（但是不是很稳定）。
 
 ###启动
