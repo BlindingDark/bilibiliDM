@@ -46,8 +46,10 @@ public class GetMusicURLByName {
 	 */
 	public static void main(String[] args) {
 		String musicInfo = PostAndGet.sendPost("http://music.163.com/api/search/get/",
-				"s=" + 1702644 + "&limit=1&type=1&offset=0");
+				"s=" + 326695 + "&limit=1&type=1&offset=0");
 		;
+		System.out.println(musicInfo);
+		
 		String musicUrl = getMusicURL("21162523");
 		System.out.println(musicCanDownloadPattern.matcher(musicUrl).find());
 
